@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Requests - ArtConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Client Requests & Work Status</h1>
+            <p class="text-gray-500 text-sm mt-1">Review incoming requests, update work status, and manage active commissions.</p>
+        </div>
+    </div>
+
+    <!-- Status Filter Tabs -->
+    <div class="flex space-x-2 border-b border-gray-200 mb-8 overflow-x-auto pb-2">
+        <a href="{% url 'artist_requests_list' %}" class="px-4 py-2 text-sm font-semibold rounded-lg {% if not selected_status %}bg-indigo-600 text-white{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+            All Requests
+        </a>
+        <a href="{% url 'artist_requests_list' %}?status=PENDING" class="px-4 py-2 text-sm font-semibold rounded-lg {% if selected_status == 'PENDING' %}bg-amber-600 text-white{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+            Pending
+        </a>
+        <a href="{% url 'artist_requests_list' %}?status=ACCEPTED" class="px-4 py-2 text-sm font-semibold rounded-lg {% if selected_status == 'ACCEPTED' %}bg-blue-600 text-white{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+            Upcoming (Accepted)
+        </a>
+        <a href="{% url 'artist_requests_list' %}?status=IN_PROGRESS" class="px-4 py-2 text-sm font-semibold rounded-lg {% if selected_status == 'IN_PROGRESS' %}bg-purple-600 text-white{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+            In Progress
+        </a>
+        <a href="{% url 'artist_requests_list' %}?status=COMPLETED" class="px-4 py-2 text-sm font-semibold rounded-lg {% if selected_status == 'COMPLETED' %}bg-emerald-600 text-white{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+            Completed Work
+        </a>
+    </div>
+
+    {% if requests_list %}
+        <div class="space-y-6">
+            {% for req in requests_list %}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div class="md:flex md:items-center md:justify-between mb-4 pb-4 border-b border-gray-100">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">{{ req.title }}</h3>
+                            <p class="text-sm text-gray-500 mt-0.5">
+                                Client: <strong>{{ req.client.user.get_full_name|default:req.client.user.username }}</strong>
+                                {% if req.client.user.email %}({{ req.client.user.email }}){% endif %}
+                            </p>
+                        </div>
+                        <div class="mt-4 md:mt-0 flex items-center space-x-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+                                {% if req.status == 'PENDING' %}bg-amber-100 text-amber-800
+                                {% elif req.status == 'ACCEPTED' %}bg-blue-100 text-blue-800
+                                {% elif req.status == 'IN_PROGRESS' %}bg-purple-100 text-purple-800
+                                {% elif req.status == 'COMPLETED' %}bg-emerald-100 text-emerald-800
+                                {% elif req.status == 'REJECTED' %}bg-red-100 text-red-800{% endif %}">
+                                {{ req.get_status_display }}
+                            </span>
+                            <span class="text-indigo-600 font-extrabold text-lg">₹{{ req.budget }}</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                        {% if req.event_date %}
+                            <div><strong>Event Date:</strong> {{ req.event_date|date:"M d, Y" }}</div>
+                        {% endif %}
+                        {% if req.location %}
+                            <div><strong>Location:</strong> {{ req.location }}</div>
+                        {% endif %}
+                        <div class="md:col-span-2 bg-gray-50 p-4 rounded-lg text-sm text-gray-700">
+                            <strong>Details:</strong> {{ req.details }}
+                        </div>
+                    </div>
+
+                    <!-- Workflow Actions -->
+                    <div class="flex justify-end items-center space-x-3 pt-4 border-t border-gray-100">
+                        {% if req.status == 'PENDING' %}
+                            <form method="post" action="{% url 'update_request_status' req.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="REJECTED">
+                                <button type="submit" class="bg-red-50 text-red-600 font-semibold text-xs px-4 py-2 rounded-lg hover:bg-red-100 border border-red-200 transition">
+                                    Reject Request
+                                </button>
+                            </form>
+                            <form method="post" action="{% url 'update_request_status' req.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="ACCEPTED">
+                                <button type="submit" class="bg-emerald-600 text-white font-semibold text-xs px-4 py-2 rounded-lg hover:bg-emerald-700 shadow transition">
+                                    Accept Request
+                                </button>
+                            </form>
+                        {% elif req.status == 'ACCEPTED' %}
+                            <form method="post" action="{% url 'update_request_status' req.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="IN_PROGRESS">
+                                <button type="submit" class="bg-purple-600 text-white font-semibold text-xs px-4 py-2 rounded-lg hover:bg-purple-700 shadow transition">
+                                    Start Work (In Progress)
+                                </button>
+                            </form>
+                        {% elif req.status == 'IN_PROGRESS' %}
+                            <form method="post" action="{% url 'update_request_status' req.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="COMPLETED">
+                                <button type="submit" class="bg-emerald-600 text-white font-semibold text-xs px-4 py-2 rounded-lg hover:bg-emerald-700 shadow transition">
+                                    Mark as Completed
+                                </button>
+                            </form>
+                        {% elif req.status == 'COMPLETED' %}
+                            <span class="text-xs text-emerald-600 font-semibold flex items-center">
+                                ✓ Completed & Earnings Logged (₹{{ req.budget }})
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-white p-12 text-center rounded-xl border border-dashed border-gray-300">
+            <h3 class="text-lg font-medium text-gray-900">No requests found</h3>
+            <p class="mt-1 text-sm text-gray-500">There are no client requests in this status category.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

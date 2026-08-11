@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - ArtConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto px-4 py-20 text-center">
+    <div class="text-6xl font-extrabold text-indigo-600 mb-4">404</div>
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Page Not Found</h1>
+    <p class="text-gray-600 mb-8">The page or artist profile you are looking for does not exist or has been moved.</p>
+    <a href="{% url 'home' %}" class="bg-indigo-600 text-white font-medium px-6 py-3 rounded-lg hover:bg-indigo-700 transition shadow">
+        Return to Home Page
+    </a>
+</div>
+{% endblock %}

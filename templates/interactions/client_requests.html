@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}My Requests - ArtConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">My Requests & Commissions</h1>
+        <p class="text-gray-500 text-sm mt-1">Track the status of request submissions sent to artists.</p>
+    </div>
+
+    {% if requests_list %}
+        <div class="space-y-6">
+            {% for req in requests_list %}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div class="md:flex md:items-center md:justify-between mb-4 pb-4 border-b border-gray-100">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">{{ req.title }}</h3>
+                            <p class="text-sm text-gray-500 mt-0.5">
+                                Artist: <strong>{{ req.artist.user.get_full_name|default:req.artist.user.username }}</strong>
+                                ({{ req.artist.artist_type.name|default:"Artist" }})
+                            </p>
+                        </div>
+                        <div class="mt-4 md:mt-0 flex items-center space-x-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+                                {% if req.status == 'PENDING' %}bg-amber-100 text-amber-800
+                                {% elif req.status == 'ACCEPTED' %}bg-blue-100 text-blue-800
+                                {% elif req.status == 'IN_PROGRESS' %}bg-purple-100 text-purple-800
+                                {% elif req.status == 'COMPLETED' %}bg-emerald-100 text-emerald-800
+                                {% elif req.status == 'REJECTED' %}bg-red-100 text-red-800{% endif %}">
+                                {{ req.get_status_display }}
+                            </span>
+                            <span class="text-indigo-600 font-extrabold text-lg">₹{{ req.budget }}</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                        {% if req.event_date %}
+                            <div><strong>Event Date:</strong> {{ req.event_date|date:"M d, Y" }}</div>
+                        {% endif %}
+                        {% if req.location %}
+                            <div><strong>Location:</strong> {{ req.location }}</div>
+                        {% endif %}
+                        <div class="md:col-span-2 bg-gray-50 p-4 rounded-lg text-sm text-gray-700">
+                            <strong>Details:</strong> {{ req.details }}
+                        </div>
+                    </div>
+
+                    {% if req.status == 'COMPLETED' %}
+                        <div class="flex justify-end pt-2 border-t border-gray-100">
+                            {% if req.review %}
+                                <span class="text-xs text-emerald-600 font-semibold flex items-center">
+                                    ✓ Reviewed ({{ req.review.rating }}/5 Stars)
+                                </span>
+                            {% else %}
+                                <a href="{% url 'create_review' req.id %}" class="bg-indigo-600 text-white font-medium text-xs px-4 py-2 rounded-lg hover:bg-indigo-700 transition shadow">
+                                    Leave Review & Rating
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-white p-12 text-center rounded-xl border border-dashed border-gray-300">
+            <h3 class="text-lg font-medium text-gray-900">No requests sent yet</h3>
+            <p class="mt-1 text-sm text-gray-500">Browse creative professionals and request custom artwork or services.</p>
+            <div class="mt-6">
+                <a href="{% url 'artist_discovery' %}" class="bg-indigo-600 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition shadow">
+                    Browse Artists
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

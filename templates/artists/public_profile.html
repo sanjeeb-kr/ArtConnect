@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}{{ artist.user.get_full_name|default:artist.user.username }} - {{ artist.artist_type.name|default:"Artist" }} | ArtConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Profile Banner & Header -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-10">
+        <div class="md:flex md:items-center md:justify-between">
+            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 text-center md:text-left">
+                {% if artist.profile_picture %}
+                    <img src="{{ artist.profile_picture.url }}" alt="{{ artist.user.get_full_name }}" class="w-32 h-32 rounded-full object-cover border-4 border-indigo-100 shadow">
+                {% else %}
+                    <div class="w-32 h-32 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-4xl border-4 border-indigo-200">
+                        {{ artist.user.first_name|default:artist.user.username|first|upper }}
+                    </div>
+                {% endif %}
+                <div>
+                    <h1 class="text-3xl font-extrabold text-gray-900">{{ artist.user.get_full_name|default:artist.user.username }}</h1>
+                    
+                    <!-- Rating Badge & Location -->
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-2">
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 rounded-full">
+                            {{ artist.artist_type.name|default:"Creative Professional" }}
+                        </span>
+                        
+                        {% if avg_rating %}
+                            <span class="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                                ⭐ {{ avg_rating }} / 5.0 <span class="text-gray-500 font-normal">({{ reviews_count }} Review{{ reviews_count|pluralize }})</span>
+                            </span>
+                        {% else %}
+                            <span class="text-xs text-gray-400 font-medium">⭐ New Artist (No reviews yet)</span>
+                        {% endif %}
+
+                        {% if artist.location %}
+                            <span class="text-gray-500 text-sm flex items-center">
+                                📍 {{ artist.location }}
+                            </span>
+                        {% endif %}
+                        {% if artist.experience_years %}
+                            <span class="text-gray-500 text-sm">
+                                • {{ artist.experience_years }} Year{{ artist.experience_years|pluralize }} Experience
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    {% if artist.bio %}
+                        <p class="mt-4 text-gray-600 max-w-2xl text-sm leading-relaxed">{{ artist.bio }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- CTA Buttons for Clients -->
+            <div class="mt-6 md:mt-0 flex flex-col sm:flex-row gap-3 justify-center">
+                {% if user.is_authenticated and user.is_client and user != artist.user %}
+                    <a href="{% url 'create_commission_request' artist.id %}" class="inline-block bg-indigo-600 text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition shadow">
+                        Request Artist / Hire
+                    </a>
+                    <a href="{% url 'create_direct_artist_review' artist.id %}" class="inline-block bg-amber-500 text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-amber-600 transition shadow">
+                        ⭐ Rate & Review Artist
+                    </a>
+                {% elif not user.is_authenticated %}
+                    <a href="{% url 'login' %}" class="inline-block bg-indigo-600 text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition shadow">
+                        Log In to Hire or Rate
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Showcase Section -->
+    <div class="mb-14">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Portfolio & Creative Work</h2>
+        {% if posts %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for post in posts %}
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between group hover:shadow-md transition">
+                        <!-- Media Card Container -->
+                        <div class="h-64 bg-gray-900 overflow-hidden relative flex items-center justify-center">
+                            {% if post.thumbnail %}
+                                <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            {% elif post.is_image %}
+                                <img src="{{ post.media.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            {% elif post.is_video %}
+                                <video controls class="w-full h-full object-cover">
+                                    <source src="{{ post.media.url }}">
+                                    Your browser does not support video playback.
+                                </video>
+                            {% elif post.is_audio %}
+                                <div class="p-6 w-full text-center bg-indigo-950 flex flex-col items-center justify-center h-full text-white">
+                                    <svg class="w-12 h-12 text-indigo-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                    </svg>
+                                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-200 mb-2">Audio Performance</span>
+                                    <audio controls class="w-full max-w-xs mt-1">
+                                        <source src="{{ post.media.url }}">
+                                    </audio>
+                                </div>
+                            {% elif post.is_pdf %}
+                                <div class="p-6 w-full text-center bg-indigo-50 flex flex-col items-center justify-center h-full text-gray-900">
+                                    <svg class="w-16 h-16 text-indigo-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span class="text-sm font-bold text-gray-800 mb-2">PDF Document</span>
+                                    <a href="{{ post.media.url }}" target="_blank" class="bg-indigo-600 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg hover:bg-indigo-700 transition">
+                                        Read PDF Document 📄
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="p-6 w-full text-center bg-gray-100 flex flex-col items-center justify-center h-full text-gray-800">
+                                    <svg class="w-14 h-14 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <a href="{{ post.media.url }}" target="_blank" class="bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-lg">View File</a>
+                                </div>
+                            {% endif %}
+
+                            {% if post.category %}
+                                <span class="absolute top-3 left-3 bg-black/75 text-white text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm z-10">
+                                    {{ post.category.name }}
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-1">
+                                    <h3 class="text-lg font-bold text-gray-900">{{ post.title }}</h3>
+                                    {% if post.price %}
+                                        <span class="text-indigo-600 font-bold text-sm">₹{{ post.price }}</span>
+                                    {% endif %}
+                                </div>
+                                {% if post.description %}
+                                    <p class="text-gray-600 text-sm line-clamp-2 mb-4">{{ post.description }}</p>
+                                {% endif %}
+                            </div>
+
+                            <!-- Interactive Like Button -->
+                            <div class="flex justify-between items-center border-t border-gray-100 pt-3 text-xs text-gray-500">
+                                <span>Uploaded {{ post.created_at|date:"M d, Y" }}</span>
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'toggle_like_post' post.id %}" class="flex items-center space-x-1 font-semibold transition px-2.5 py-1 rounded-lg border {% if post.id in user_liked_post_ids %}bg-rose-50 text-rose-600 border-rose-200{% else %}bg-gray-50 text-gray-600 border-gray-200 hover:bg-rose-50 hover:text-rose-600{% endif %}">
+                                        <span>{% if post.id in user_liked_post_ids %}❤️{% else %}🤍{% endif %}</span>
+                                        <span>{{ post.likes_count|default:0 }}</span>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'login' %}" class="flex items-center space-x-1 font-semibold text-gray-400 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-200">
+                                        <span>🤍</span>
+                                        <span>{{ post.likes_count|default:0 }}</span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 text-sm italic">No portfolio work uploaded yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Client Reviews Section -->
+    <div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Client Reviews & Ratings</h2>
+        {% if reviews %}
+            <div class="space-y-4 max-w-3xl">
+                {% for rev in reviews %}
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">{{ rev.client.user.get_full_name|default:rev.client.user.username }}</h4>
+                                <span class="text-xs text-gray-400">{{ rev.created_at|date:"M d, Y" }}</span>
+                            </div>
+                            <div class="text-amber-500 text-sm font-bold">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= rev.rating %}★{% else %}<span class="text-gray-300">★</span>{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed">{{ rev.comment }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 text-sm italic">No reviews submitted for this artist yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

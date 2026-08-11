@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - ArtConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto px-4 py-20 text-center">
+    <div class="text-6xl font-extrabold text-red-600 mb-4">500</div>
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Something Went Wrong</h1>
+    <p class="text-gray-600 mb-8">An unexpected server error occurred. Please try again later or return to home.</p>
+    <a href="{% url 'home' %}" class="bg-indigo-600 text-white font-medium px-6 py-3 rounded-lg hover:bg-indigo-700 transition shadow">
+        Return to Home Page
+    </a>
+</div>
+{% endblock %}

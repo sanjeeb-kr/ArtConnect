@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+    <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-6xl">
+        Discover & Connect with <span class="text-indigo-600">Creative Talent</span>
+    </h1>
+    <p class="mt-6 text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        Find photographers, painters, musicians, dancers, poets, and creative professionals for custom commissions and events.
+    </p>
+    <div class="mt-10 flex justify-center gap-4">
+        <a href="{% url 'artist_discovery' %}" class="bg-indigo-600 text-white px-8 py-3.5 rounded-xl text-lg font-semibold hover:bg-indigo-700 transition shadow-lg hover:shadow-indigo-200">
+            Find Artists
+        </a>
+        <a href="{% url 'register_artist' %}" class="bg-white text-gray-700 border border-gray-300 px-8 py-3.5 rounded-xl text-lg font-semibold hover:bg-gray-50 transition">
+            Join as Artist
+        </a>
+    </div>
+</div>
+{% endblock %}
