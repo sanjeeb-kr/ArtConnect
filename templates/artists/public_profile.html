@@ -78,9 +78,26 @@
                         <!-- Media Card Container -->
                         <div class="h-64 bg-gray-900 overflow-hidden relative flex items-center justify-center">
                             {% if post.thumbnail %}
-                                <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                <a href="{{ post.media.url }}" target="_blank" class="w-full h-full block relative group/thumb overflow-hidden" title="Click to view/play {{ post.title }}">
+                                    <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover/thumb:scale-105 transition duration-300">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 transition flex items-center justify-center">
+                                        <span class="bg-indigo-600 text-white text-xs font-semibold px-3.5 py-2 rounded-lg shadow flex items-center gap-1.5">
+                                            {% if post.is_video %}▶ Play Video
+                                            {% elif post.is_audio %}🎵 Listen Track
+                                            {% elif post.is_pdf %}📄 Read PDF
+                                            {% else %}🔍 Open File{% endif %}
+                                        </span>
+                                    </div>
+                                </a>
                             {% elif post.is_image %}
-                                <img src="{{ post.media.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                <a href="{{ post.media.url }}" target="_blank" class="w-full h-full block relative group/thumb overflow-hidden" title="Click to view full image">
+                                    <img src="{{ post.media.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover/thumb:scale-105 transition duration-300">
+                                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover/thumb:opacity-100 transition flex items-center justify-center">
+                                        <span class="bg-indigo-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow">
+                                            🔍 Open Artwork
+                                        </span>
+                                    </div>
+                                </a>
                             {% elif post.is_video %}
                                 <video controls class="w-full h-full object-cover">
                                     <source src="{{ post.media.url }}">
@@ -126,7 +143,11 @@
                         <div class="p-5 flex-grow flex flex-col justify-between">
                             <div>
                                 <div class="flex justify-between items-start mb-1">
-                                    <h3 class="text-lg font-bold text-gray-900">{{ post.title }}</h3>
+                                    <h3 class="text-lg font-bold text-gray-900">
+                                        <a href="{{ post.media.url }}" target="_blank" class="hover:text-indigo-600 transition">
+                                            {{ post.title }} ↗
+                                        </a>
+                                    </h3>
                                     {% if post.price %}
                                         <span class="text-indigo-600 font-bold text-sm">₹{{ post.price }}</span>
                                     {% endif %}
