@@ -41,7 +41,7 @@ class ArtistProfile(models.Model):
     bio = models.TextField(blank=True, help_text="Short background and statement")
     location = models.CharField(max_length=100, blank=True, help_text="City / State / Country")
     experience_years = models.PositiveIntegerField(default=0, help_text="Years of creative experience")
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', max_length=500, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -57,7 +57,7 @@ class ClientProfile(models.Model):
         related_name='client_profile'
     )
     location = models.CharField(max_length=100, blank=True, help_text="City / State / Country")
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', max_length=500, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

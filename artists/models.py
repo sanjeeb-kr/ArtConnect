@@ -25,10 +25,12 @@ class Post(models.Model):
     description = models.TextField(blank=True)
     media = models.FileField(
         upload_to='portfolio_posts/',
+        max_length=500,
         help_text="Upload image, video (MP4/WebM), audio (MP3/WAV), or PDF document"
     )
     thumbnail = models.ImageField(
         upload_to='portfolio_thumbnails/',
+        max_length=500,
         blank=True,
         null=True,
         help_text="Optional cover/thumbnail image for video, audio, or PDF document"
