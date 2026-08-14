@@ -55,15 +55,18 @@ def artist_profile_edit_view(request):
     if request.method == 'POST':
         form = ArtistProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            request.user.first_name = form.cleaned_data['first_name']
-            request.user.last_name = form.cleaned_data['last_name']
-            request.user.email = form.cleaned_data['email']
-            request.user.phone_number = form.cleaned_data.get('phone_number', '')
-            request.user.save()
+            try:
+                request.user.first_name = form.cleaned_data['first_name']
+                request.user.last_name = form.cleaned_data['last_name']
+                request.user.email = form.cleaned_data['email']
+                request.user.phone_number = form.cleaned_data.get('phone_number', '')
+                request.user.save()
 
-            form.save()
-            messages.success(request, "Your profile has been updated successfully!")
-            return redirect('artist_dashboard')
+                form.save()
+                messages.success(request, "Your profile has been updated successfully!")
+                return redirect('artist_dashboard')
+            except Exception as e:
+                messages.error(request, f"Failed to update profile: {str(e)}")
         else:
             messages.error(request, "Please fix the errors below.")
     else:
@@ -91,11 +94,14 @@ def artist_post_create_view(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.artist = profile
-            post.save()
-            messages.success(request, "Portfolio post created successfully!")
-            return redirect('artist_posts_list')
+            try:
+                post = form.save(commit=False)
+                post.artist = profile
+                post.save()
+                messages.success(request, "Portfolio post created successfully!")
+                return redirect('artist_posts_list')
+            except Exception as e:
+                messages.error(request, f"Upload error: {str(e)}")
         else:
             messages.error(request, "Please fix the errors below.")
     else:
@@ -115,9 +121,12 @@ def artist_post_edit_view(request, pk):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Portfolio post updated successfully!")
-            return redirect('artist_posts_list')
+            try:
+                form.save()
+                messages.success(request, "Portfolio post updated successfully!")
+                return redirect('artist_posts_list')
+            except Exception as e:
+                messages.error(request, f"Upload error: {str(e)}")
         else:
             messages.error(request, "Please fix the errors below.")
     else:

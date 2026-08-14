@@ -34,6 +34,28 @@ class PostForm(forms.ModelForm):
             }),
         }
 
+    def clean_media(self):
+        media = self.cleaned_data.get('media')
+        if media and hasattr(media, 'size'):
+            max_size = 40 * 1024 * 1024  # 40 MB
+            if media.size > max_size:
+                size_mb = round(media.size / (1024 * 1024), 1)
+                raise forms.ValidationError(
+                    f"File size ({size_mb} MB) exceeds the 40 MB limit. Please upload a compressed MP4 video, audio, or document file."
+                )
+        return media
+
+    def clean_thumbnail(self):
+        thumbnail = self.cleaned_data.get('thumbnail')
+        if thumbnail and hasattr(thumbnail, 'size'):
+            max_size = 10 * 1024 * 1024  # 10 MB
+            if thumbnail.size > max_size:
+                size_mb = round(thumbnail.size / (1024 * 1024), 1)
+                raise forms.ValidationError(
+                    f"Cover image size ({size_mb} MB) exceeds the 10 MB limit."
+                )
+        return thumbnail
+
 
 class ArtistProfileForm(forms.ModelForm):
     first_name = forms.CharField(max_length=150, required=True)
