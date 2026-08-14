@@ -79,3 +79,20 @@ class Post(models.Model):
     @property
     def is_pdf(self):
         return self.file_extension == '.pdf'
+
+    @property
+    def media_url(self):
+        """
+        Returns the absolute media URL. Dynamically replaces /image/upload/ with /video/upload/ or /raw/upload/
+        if Cloudinary generated an image endpoint for non-image media files.
+        """
+        if not self.media:
+            return ''
+        url_str = self.media.url
+        if self.is_video or self.is_audio:
+            if '/image/upload/' in url_str:
+                url_str = url_str.replace('/image/upload/', '/video/upload/')
+        elif self.is_pdf:
+            if '/image/upload/' in url_str:
+                url_str = url_str.replace('/image/upload/', '/raw/upload/')
+        return url_str

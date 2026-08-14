@@ -20,7 +20,7 @@
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
                     <div class="h-64 bg-gray-900 overflow-hidden relative flex items-center justify-center">
                         {% if post.thumbnail %}
-                            <a href="{{ post.media.url }}" target="_blank" class="w-full h-full block relative group/thumb overflow-hidden" title="Click to view/play {{ post.title }}">
+                            <a href="{{ post.media_url }}" target="_blank" class="w-full h-full block relative group/thumb overflow-hidden" title="Click to view/play {{ post.title }}">
                                 <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover/thumb:scale-105 transition duration-300">
                                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 transition flex items-center justify-center">
                                     <span class="bg-indigo-600 text-white text-xs font-semibold px-3.5 py-2 rounded-lg shadow flex items-center gap-1.5">
@@ -32,8 +32,8 @@
                                 </div>
                             </a>
                         {% elif post.is_image %}
-                            <a href="{{ post.media.url }}" target="_blank" class="w-full h-full block relative group/thumb overflow-hidden" title="Click to view full image">
-                                <img src="{{ post.media.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover/thumb:scale-105 transition duration-300">
+                            <a href="{{ post.media_url }}" target="_blank" class="w-full h-full block relative group/thumb overflow-hidden" title="Click to view full image">
+                                <img src="{{ post.media_url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover/thumb:scale-105 transition duration-300">
                                 <div class="absolute inset-0 bg-black/30 opacity-0 group-hover/thumb:opacity-100 transition flex items-center justify-center">
                                     <span class="bg-indigo-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow">
                                         🔍 Open Artwork
@@ -42,7 +42,7 @@
                             </a>
                         {% elif post.is_video %}
                             <video controls class="w-full h-full object-cover">
-                                <source src="{{ post.media.url }}">
+                                <source src="{{ post.media_url }}">
                                 Your browser does not support video.
                             </video>
                         {% elif post.is_audio %}
@@ -52,7 +52,7 @@
                                 </svg>
                                 <span class="text-xs font-semibold uppercase tracking-wider text-indigo-200 mb-2">Audio Track</span>
                                 <audio controls class="w-full max-w-xs mt-1">
-                                    <source src="{{ post.media.url }}">
+                                    <source src="{{ post.media_url }}">
                                 </audio>
                             </div>
                         {% elif post.is_pdf %}
@@ -61,7 +61,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                                 </svg>
                                 <span class="text-sm font-bold text-gray-800 mb-2">PDF Document</span>
-                                <a href="{{ post.media.url }}" target="_blank" class="bg-indigo-600 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg hover:bg-indigo-700 transition">
+                                <a href="{{ post.media_url }}" target="_blank" class="bg-indigo-600 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg hover:bg-indigo-700 transition">
                                     Read PDF 📄
                                 </a>
                             </div>
@@ -70,7 +70,7 @@
                                 <svg class="w-14 h-14 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
-                                <a href="{{ post.media.url }}" target="_blank" class="bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-lg">View File</a>
+                                <a href="{{ post.media_url }}" target="_blank" class="bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-lg">View File</a>
                             </div>
                         {% endif %}
 
@@ -85,7 +85,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <h3 class="text-lg font-bold text-gray-900 line-clamp-1">
-                                    <a href="{{ post.media.url }}" target="_blank" class="hover:text-indigo-600 transition">
+                                    <a href="{{ post.media_url }}" target="_blank" class="hover:text-indigo-600 transition">
                                         {{ post.title }} ↗
                                     </a>
                                 </h3>
