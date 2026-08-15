@@ -65,37 +65,36 @@ class Post(models.Model):
         return os.path.splitext(self.media.name)[1].lower()
 
     @property
-    def is_image(self):
-        return self.file_extension in ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif']
-
-    @property
     def is_video(self):
         return self.file_extension in ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv']
 
     @property
     def is_audio(self):
-        return self.file_extension in ['.mp3', '.wav', '.aac', '.flac', '.m4a', '.ogg']
+        return self.file_extension in ['.mp3', '.wav', '.aac', '.flac', '.m4a']
 
     @property
     def is_pdf(self):
         return self.file_extension == '.pdf'
 
     @property
+    def is_image(self):
+        """If it's not a video, audio, or PDF document, it is an image."""
+        return not (self.is_video or self.is_audio or self.is_pdf)
+
+    @property
     def media_url(self):
+        """
+        Returns the absolute media URL. Replaces /video/upload/ with /image/upload/
+        if an image post generated a video URL.
+        """
         if not self.media:
             return ''
         url_str = self.media.url
         if self.is_image:
+            if url_str.endswith('.mp4'):
+                url_str = url_str[:-4]
             if '/video/upload/' in url_str:
                 url_str = url_str.replace('/video/upload/', '/image/upload/')
             elif '/raw/upload/' in url_str:
                 url_str = url_str.replace('/raw/upload/', '/image/upload/')
-        elif self.is_pdf:
-            if '/image/upload/' in url_str:
-                url_str = url_str.replace('/image/upload/', '/raw/upload/')
-            elif '/video/upload/' in url_str:
-                url_str = url_str.replace('/video/upload/', '/raw/upload/')
-        elif self.is_video or self.is_audio:
-            if '/image/upload/' in url_str:
-                url_str = url_str.replace('/image/upload/', '/video/upload/')
         return url_str
