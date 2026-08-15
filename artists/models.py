@@ -60,13 +60,34 @@ class Post(models.Model):
 
     @property
     def file_extension(self):
-        if self.media:
-            return os.path.splitext(self.media.name)[1].lower()
-        return ''
+        if not self.media or not self.media.name:
+            return ''
+        name_lower = self.media.name.lower()
+        if '.avif' in name_lower:
+            return '.avif'
+        if '.png' in name_lower:
+            return '.png'
+        if '.jpg' in name_lower or '.jpeg' in name_lower:
+            return '.jpg'
+        if '.gif' in name_lower:
+            return '.gif'
+        if '.webp' in name_lower:
+            return '.webp'
+        if '.pdf' in name_lower:
+            return '.pdf'
+        if '.mp3' in name_lower:
+            return '.mp3'
+        if '.wav' in name_lower:
+            return '.wav'
+        if '.mp4' in name_lower:
+            return '.mp4'
+        if '.webm' in name_lower:
+            return '.webm'
+        return os.path.splitext(self.media.name)[1].lower()
 
     @property
     def is_image(self):
-        return self.file_extension in ['.jpg', '.jpeg', '.png', '.gif', '.webp']
+        return self.file_extension in ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif']
 
     @property
     def is_video(self):
@@ -83,16 +104,27 @@ class Post(models.Model):
     @property
     def media_url(self):
         """
-        Returns the absolute media URL. Dynamically replaces /image/upload/ with /video/upload/ or /raw/upload/
-        if Cloudinary generated an image endpoint for non-image media files.
+        Returns the clean, correct absolute media URL for images, videos, audio, and PDFs.
+        Corrects any mismatched Cloudinary upload endpoints dynamically.
         """
         if not self.media:
             return ''
         url_str = self.media.url
-        if self.is_video or self.is_audio:
-            if '/image/upload/' in url_str:
-                url_str = url_str.replace('/image/upload/', '/video/upload/')
+        if self.is_image:
+            if url_str.endswith('.mp4'):
+                url_str = url_str[:-4]
+            if '/video/upload/' in url_str:
+                url_str = url_str.replace('/video/upload/', '/image/upload/')
+            elif '/raw/upload/' in url_str:
+                url_str = url_str.replace('/raw/upload/', '/image/upload/')
         elif self.is_pdf:
+            if url_str.endswith('.mp4'):
+                url_str = url_str[:-4]
             if '/image/upload/' in url_str:
                 url_str = url_str.replace('/image/upload/', '/raw/upload/')
+            elif '/video/upload/' in url_str:
+                url_str = url_str.replace('/video/upload/', '/raw/upload/')
+        elif self.is_video or self.is_audio:
+            if '/image/upload/' in url_str:
+                url_str = url_str.replace('/image/upload/', '/video/upload/')
         return url_str
