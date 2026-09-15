@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from .validators import validate_mobile_number
 
 
 class User(AbstractUser):
@@ -13,7 +14,7 @@ class User(AbstractUser):
         default=Role.CLIENT,
         help_text="User role: ARTIST or CLIENT"
     )
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True, validators=[validate_mobile_number])
 
     def is_artist(self):
         return self.role == self.Role.ARTIST

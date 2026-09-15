@@ -165,7 +165,7 @@
                         {% else %}
                             <a href="{% url 'client_dashboard' %}" class="text-sm font-medium text-[#F1E9D2] hover:text-[#C69A2E]">Client Dashboard</a>
                         {% endif %}
-                        <span class="text-xs sm:text-sm text-[#F1E9D2]/70 hidden md:inline">Artist: {{ user.first_name|default:user.username }}</span>
+                        <span class="text-xs sm:text-sm text-[#F1E9D2]/70 hidden md:inline">{% if user.is_artist %}Artist:{% else %}Client:{% endif %} {{ user.first_name|default:user.username }}</span>
                         <a href="{% url 'logout' %}" class="text-xs sm:text-sm text-[#F1E9D2]/80 hover:text-[#F1E9D2]">Logout</a>
                     {% else %}
                         <a href="{% url 'login' %}" class="text-sm font-medium text-[#F1E9D2] hover:text-[#C69A2E]">Login</a>

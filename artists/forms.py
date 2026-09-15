@@ -42,7 +42,7 @@ class ArtistProfileForm(forms.ModelForm):
     first_name = forms.CharField(max_length=150, required=True)
     last_name = forms.CharField(max_length=150, required=True)
     email = forms.EmailField(required=True)
-    phone_number = forms.CharField(max_length=20, required=False)
+    phone_number = forms.CharField(max_length=20, required=False, validators=[validate_mobile_number])
 
     class Meta:
         model = ArtistProfile

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import User, ArtistProfile, ClientProfile
+from .validators import validate_mobile_number
 from artists.models import ArtistType
 
 
@@ -8,7 +9,7 @@ class ArtistRegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=150, required=True)
     last_name = forms.CharField(max_length=150, required=True)
     email = forms.EmailField(required=True)
-    phone_number = forms.CharField(max_length=20, required=False)
+    phone_number = forms.CharField(max_length=20, required=False, validators=[validate_mobile_number])
 
     artist_type = forms.ModelChoiceField(
         queryset=ArtistType.objects.all(),
@@ -49,7 +50,7 @@ class ClientRegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=150, required=True)
     last_name = forms.CharField(max_length=150, required=True)
     email = forms.EmailField(required=True)
-    phone_number = forms.CharField(max_length=20, required=False)
+    phone_number = forms.CharField(max_length=20, required=False, validators=[validate_mobile_number])
 
     location = forms.CharField(max_length=100, required=False)
     profile_picture = forms.ImageField(required=False)
