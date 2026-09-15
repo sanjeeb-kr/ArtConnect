@@ -3,57 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ArtConnect - Connect with Creative Professionals{% endblock %}</title>
-    <!-- Tailwind CSS (CDN for development) -->
+    <title>{% block title %}ArtConnect — Working Artist Studio & Portfolio{% endblock %}</title>
+
+    <!-- Google Fonts: Newsreader (Editorial Serif) & Karla (Warm Humanist Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400..700;1,400..700&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --color-olive: #4B5320;
+            --color-moss: #7C8850;
+            --color-parchment: #F1E9D2;
+            --color-ink: #241F14;
+            --color-wine: #6E2A3A;
+            --color-wine-dark: #521F2B;
+            --color-gold: #C69A2E;
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            color: #241F14;
+            background-color: #4B5320;
+            /* Linen/canvas texture background */
+            background-image: 
+                radial-gradient(rgba(241, 233, 210, 0.08) 1px, transparent 1px),
+                radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            background-attachment: fixed;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, .font-serif-studio {
+            font-family: 'Newsreader', Georgia, serif;
+            font-weight: 600;
+        }
+
+        /* Solid Wine Button with Parchment hairline border */
+        .btn-wine {
+            background-color: #6E2A3A !important;
+            color: #F1E9D2 !important;
+            border: 1.5px solid rgba(241, 233, 210, 0.3) !important;
+            transition: background-color 0.15s ease-in-out;
+        }
+        .btn-wine:hover {
+            background-color: #521F2B !important;
+        }
+
+        /* Parchment card surface */
+        .bg-parchment {
+            background-color: #F1E9D2 !important;
+            color: #241F14 !important;
+        }
+
+        /* Moss surface */
+        .bg-moss {
+            background-color: #7C8850 !important;
+        }
+
+        /* Ink text */
+        .text-ink {
+            color: #241F14 !important;
+        }
+
+        /* Gold accents */
+        .text-gold {
+            color: #C69A2E !important;
+        }
+        .bg-gold {
+            background-color: #C69A2E !important;
+        }
+        .border-gold {
+            border-color: #C69A2E !important;
+        }
+
+        /* Index Card rules */
+        .index-card {
+            background-color: #F1E9D2 !important;
+            color: #241F14 !important;
+            border: 1px solid rgba(36, 31, 20, 0.2) !important;
+        }
+
+        /* Global Form Controls (Inputs, Selects, Textareas, Options) */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="date"],
+        input[type="file"],
+        select,
+        textarea {
+            background-color: #F1E9D2 !important;
+            color: #241F14 !important;
+            border: 1px solid rgba(36, 31, 20, 0.3) !important;
+            border-radius: 0.25rem !important;
+            padding: 0.625rem 1rem !important;
+            font-size: 0.875rem !important;
+            font-family: 'Karla', sans-serif !important;
+            width: 100% !important;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none !important;
+            border-color: #6E2A3A !important;
+            box-shadow: 0 0 0 1px #6E2A3A !important;
+        }
+
+        select option {
+            background-color: #F1E9D2 !important;
+            color: #241F14 !important;
+        }
+
+        /* Pinned Photo Tilt */
+        .pin-mat {
+            background-color: #F1E9D2;
+            border: 6px solid #F1E9D2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .pin-mat:hover {
+            transform: rotate(0deg) scale(1.02) !important;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pin-mat, .btn-wine {
+                transition: none !important;
+                transform: none !important;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans">
-    <!-- Navbar -->
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+<body class="min-h-screen flex flex-col antialiased">
+    <!-- Header / Studio Navigation -->
+    <header class="bg-[#4B5320] border-b border-[#F1E9D2]/20 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-4 sm:space-x-8">
-                    <a href="{% url 'home' %}" class="text-xl sm:text-2xl font-bold text-indigo-600 tracking-tight">ArtConnect</a>
-                    <a href="{% url 'artist_discovery' %}" class="text-xs sm:text-sm font-medium text-gray-700 hover:text-indigo-600 transition">Browse Artists</a>
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-6 sm:space-x-10">
+                    <a href="{% url 'home' %}" class="font-serif-studio text-2xl sm:text-3xl text-[#F1E9D2] tracking-tight hover:text-[#C69A2E] transition">
+                        ArtConnect
+                    </a>
+                    <a href="{% url 'artist_discovery' %}" class="text-sm font-medium text-[#F1E9D2]/90 hover:text-[#F1E9D2] transition">
+                        Gallery & Artists
+                    </a>
                 </div>
-                <div class="flex items-center space-x-2 sm:space-x-4">
+                <div class="flex items-center space-x-3 sm:space-x-5">
                     {% if user.is_authenticated %}
                         {% if user.is_artist %}
-                            <a href="{% url 'artist_dashboard' %}" class="text-xs sm:text-sm font-medium text-gray-700 hover:text-indigo-600">Dashboard</a>
+                            <a href="{% url 'artist_dashboard' %}" class="text-sm font-medium text-[#F1E9D2] hover:text-[#C69A2E]">Studio Dashboard</a>
                         {% else %}
-                            <a href="{% url 'client_dashboard' %}" class="text-xs sm:text-sm font-medium text-gray-700 hover:text-indigo-600">Dashboard</a>
+                            <a href="{% url 'client_dashboard' %}" class="text-sm font-medium text-[#F1E9D2] hover:text-[#C69A2E]">Client Dashboard</a>
                         {% endif %}
-                        <span class="text-xs sm:text-sm font-medium text-gray-500 hidden md:inline">Hello, {{ user.first_name|default:user.username }}</span>
-                        <a href="{% url 'logout' %}" class="text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-900">Logout</a>
+                        <span class="text-xs sm:text-sm text-[#F1E9D2]/70 hidden md:inline">Artist: {{ user.first_name|default:user.username }}</span>
+                        <a href="{% url 'logout' %}" class="text-xs sm:text-sm text-[#F1E9D2]/80 hover:text-[#F1E9D2]">Logout</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="text-xs sm:text-sm font-medium text-gray-700 hover:text-indigo-600">Login</a>
-                        <a href="{% url 'register_artist' %}" class="bg-indigo-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-indigo-700 transition">Join as Artist</a>
+                        <a href="{% url 'login' %}" class="text-sm font-medium text-[#F1E9D2] hover:text-[#C69A2E]">Login</a>
+                        <a href="{% url 'register_artist' %}" class="btn-wine px-4 py-2 rounded text-xs sm:text-sm font-medium shadow-sm">
+                            Join as Artist
+                        </a>
                     {% endif %}
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Messages -->
+    <!-- Notification Messages -->
     {% if messages %}
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
             {% for message in messages %}
-                <div class="p-4 rounded-md mb-2 text-sm font-medium {% if message.tags == 'error' %}bg-red-50 text-red-700 border border-red-200{% else %}bg-green-50 text-green-700 border border-green-200{% endif %}">
+                <div class="p-4 rounded mb-3 text-sm font-medium border {% if message.tags == 'error' %}bg-[#6E2A3A] text-[#F1E9D2] border-[#F1E9D2]/30{% else %}bg-[#7C8850] text-[#F1E9D2] border-[#F1E9D2]/30{% endif %}">
                     {{ message }}
                 </div>
             {% endfor %}
         </div>
     {% endif %}
 
-    <!-- Main Content -->
+    <!-- Main Studio Content -->
     <main class="flex-grow">
         {% block content %}
         {% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-12 py-6">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+    <!-- Studio Footer -->
+    <footer class="bg-[#4B5320] border-t border-[#F1E9D2]/20 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-[#F1E9D2]/60">
+            ArtConnect Studio & Creative Marketplace
         </div>
     </footer>
 </body>

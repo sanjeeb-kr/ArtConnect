@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
@@ -71,7 +71,6 @@ def artist_discovery_view(request):
     )
     artist_types = ArtistType.objects.all()
 
-    # Filter params
     search_query = request.GET.get('q', '').strip()
     selected_type = request.GET.get('artist_type', '').strip()
     selected_location = request.GET.get('location', '').strip()

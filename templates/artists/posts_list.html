@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}My Portfolio - ArtConnect{% endblock %}
+{% block title %}My Portfolio — ArtConnect Studio{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="flex justify-between items-center mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">My Portfolio Work</h1>
-            <p class="text-gray-500 text-sm mt-1">Manage your uploaded artwork, audio, video performances, or PDF literature.</p>
+            <h1 class="text-3xl font-serif-studio text-[#F1E9D2]">My Portfolio Work</h1>
+            <p class="text-[#F1E9D2]/80 text-sm mt-1">Manage your uploaded artwork, audio, video performances, or PDF literature.</p>
         </div>
-        <a href="{% url 'artist_post_create' %}" class="bg-indigo-600 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition shadow">
+        <a href="{% url 'artist_post_create' %}" class="btn-wine font-medium px-5 py-2.5 rounded shadow-sm text-sm">
             + Upload New Work
         </a>
     </div>
@@ -17,13 +17,13 @@
     {% if posts %}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for post in posts %}
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
-                    <div class="h-64 bg-gray-900 overflow-hidden relative flex items-center justify-center">
+                <div class="index-card rounded-lg border border-[#241F14]/20 overflow-hidden flex flex-col justify-between shadow-md hover:shadow-lg transition">
+                    <div class="h-64 bg-[#241F14] overflow-hidden relative flex items-center justify-center">
                         {% if post.thumbnail %}
-                            <a href="{{ post.media_url }}" target="_blank" class="w-full h-full block relative group/thumb overflow-hidden" title="Click to view/play {{ post.title }}">
-                                <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover/thumb:scale-105 transition duration-300">
-                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 transition flex items-center justify-center">
-                                    <span class="bg-indigo-600 text-white text-xs font-semibold px-3.5 py-2 rounded-lg shadow flex items-center gap-1.5">
+                            <a href="{{ post.media_url }}" target="_blank" class="w-full h-full block relative group overflow-hidden" title="Click to view {{ post.title }}">
+                                <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-200">
+                                <div class="absolute inset-0 bg-[#241F14]/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                    <span class="btn-wine text-xs font-semibold px-3 py-1.5 rounded">
                                         {% if post.is_video %}▶ Play Video
                                         {% elif post.is_audio %}🎵 Listen Track
                                         {% elif post.is_pdf %}📄 Read PDF
@@ -32,10 +32,10 @@
                                 </div>
                             </a>
                         {% elif post.is_image %}
-                            <a href="{{ post.media_url }}" target="_blank" class="w-full h-full block relative group/thumb overflow-hidden" title="Click to view full image">
-                                <img src="{{ post.media_url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover/thumb:scale-105 transition duration-300">
-                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover/thumb:opacity-100 transition flex items-center justify-center">
-                                    <span class="bg-indigo-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow">
+                            <a href="{{ post.media_url }}" target="_blank" class="w-full h-full block relative group overflow-hidden" title="Click to view full image">
+                                <img src="{{ post.media_url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-200">
+                                <div class="absolute inset-0 bg-[#241F14]/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                    <span class="btn-wine text-xs font-semibold px-3 py-1.5 rounded">
                                         🔍 Open Artwork
                                     </span>
                                 </div>
@@ -46,36 +46,29 @@
                                 Your browser does not support video.
                             </video>
                         {% elif post.is_audio %}
-                            <div class="p-6 w-full text-center bg-indigo-950 flex flex-col items-center justify-center h-full text-white">
-                                <svg class="w-12 h-12 text-indigo-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zM9 10l12-3"></path>
-                                </svg>
-                                <span class="text-xs font-semibold uppercase tracking-wider text-indigo-200 mb-2">Audio Track</span>
+                            <div class="p-6 w-full text-center bg-[#241F14] flex flex-col items-center justify-center h-full text-[#F1E9D2]">
+                                <span class="text-3xl mb-2">🎵</span>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-[#C69A2E] mb-2">Audio Track</span>
                                 <audio controls class="w-full max-w-xs mt-1">
                                     <source src="{{ post.media_url }}">
                                 </audio>
                             </div>
                         {% elif post.is_pdf %}
-                            <div class="p-6 w-full text-center bg-indigo-50 flex flex-col items-center justify-center h-full text-gray-900">
-                                <svg class="w-16 h-16 text-indigo-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                </svg>
-                                <span class="text-sm font-bold text-gray-800 mb-2">PDF Document</span>
-                                <a href="{{ post.media_url }}" target="_blank" class="bg-indigo-600 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg hover:bg-indigo-700 transition">
+                            <div class="p-6 w-full text-center bg-[#F1E9D2] flex flex-col items-center justify-center h-full text-[#241F14]">
+                                <span class="text-4xl mb-2">📄</span>
+                                <span class="text-sm font-bold text-[#241F14] mb-2">PDF Document</span>
+                                <a href="{{ post.media_url }}" target="_blank" class="btn-wine text-xs font-semibold px-4 py-2 rounded">
                                     Read PDF 📄
                                 </a>
                             </div>
                         {% else %}
-                            <div class="p-6 w-full text-center bg-gray-100 flex flex-col items-center justify-center h-full text-gray-800">
-                                <svg class="w-14 h-14 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <a href="{{ post.media_url }}" target="_blank" class="bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-lg">View File</a>
+                            <div class="p-6 w-full text-center bg-[#F1E9D2] flex flex-col items-center justify-center h-full text-[#241F14]">
+                                <a href="{{ post.media_url }}" target="_blank" class="btn-wine text-xs font-semibold px-3 py-1.5 rounded">View File</a>
                             </div>
                         {% endif %}
 
                         {% if post.category %}
-                            <span class="absolute top-3 left-3 bg-black/75 text-white text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm z-10">
+                            <span class="absolute top-3 left-3 bg-[#241F14] text-[#F1E9D2] text-xs font-bold px-2.5 py-1 rounded-sm border border-[#F1E9D2]/30">
                                 {{ post.category.name }}
                             </span>
                         {% endif %}
@@ -84,24 +77,24 @@
                     <div class="p-5 flex-grow flex flex-col justify-between">
                         <div>
                             <div class="flex justify-between items-start mb-2">
-                                <h3 class="text-lg font-bold text-gray-900 line-clamp-1">
-                                    <a href="{{ post.media_url }}" target="_blank" class="hover:text-indigo-600 transition">
+                                <h3 class="text-xl font-serif-studio font-bold text-[#241F14] line-clamp-1">
+                                    <a href="{{ post.media_url }}" target="_blank" class="hover:text-[#6E2A3A] transition">
                                         {{ post.title }} ↗
                                     </a>
                                 </h3>
                                 {% if post.price %}
-                                    <span class="text-indigo-600 font-bold text-sm">₹{{ post.price }}</span>
+                                    <span class="text-[#6E2A3A] font-bold text-sm">₹{{ post.price }}</span>
                                 {% endif %}
                             </div>
-                            <p class="text-gray-600 text-sm line-clamp-2 mb-4">{{ post.description }}</p>
+                            <p class="text-[#241F14]/80 text-sm line-clamp-2 mb-4">{{ post.description }}</p>
                         </div>
-                        <div class="flex justify-between items-center border-t border-gray-100 pt-3 text-xs text-gray-500">
-                            <span class="flex items-center text-rose-600 font-semibold">
+                        <div class="flex justify-between items-center border-t border-[#241F14]/15 pt-3 text-xs text-[#241F14]/70">
+                            <span class="flex items-center text-[#6E2A3A] font-bold">
                                 ❤️ {{ post.likes_count|default:0 }} Like{{ post.likes_count|pluralize }}
                             </span>
-                            <div class="space-x-3">
-                                <a href="{% url 'artist_post_edit' post.id %}" class="text-indigo-600 font-semibold hover:underline">Edit</a>
-                                <a href="{% url 'artist_post_delete' post.id %}" class="text-red-600 font-semibold hover:underline">Delete</a>
+                            <div class="space-x-3 font-semibold">
+                                <a href="{% url 'artist_post_edit' post.id %}" class="text-[#6E2A3A] hover:underline">Edit</a>
+                                <a href="{% url 'artist_post_delete' post.id %}" class="text-[#241F14] hover:underline">Delete</a>
                             </div>
                         </div>
                     </div>
@@ -109,14 +102,11 @@
             {% endfor %}
         </div>
     {% else %}
-        <div class="bg-white p-12 text-center rounded-xl border border-dashed border-gray-300">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-            </svg>
-            <h3 class="mt-2 text-lg font-medium text-gray-900">No portfolio posts yet</h3>
-            <p class="mt-1 text-sm text-gray-500">Get started by uploading sample images, videos, audio tracks, or PDF documents of your work.</p>
+        <div class="index-card p-12 text-center rounded-lg border border-[#241F14]/20 shadow-md">
+            <h3 class="font-serif-studio text-2xl text-[#241F14] mb-2">No portfolio posts yet</h3>
+            <p class="text-sm text-[#241F14]/80">Get started by uploading sample images, videos, audio tracks, or PDF documents of your work.</p>
             <div class="mt-6">
-                <a href="{% url 'artist_post_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                <a href="{% url 'artist_post_create' %}" class="btn-wine font-medium px-5 py-2.5 rounded text-sm shadow-sm inline-block">
                     Upload Your First Artwork / Performance
                 </a>
             </div>

@@ -1,52 +1,65 @@
 {% extends "base.html" %}
 
-{% block title %}Client Dashboard - ArtConnect{% endblock %}
+{% block title %}Client Dashboard — ArtConnect{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <!-- Header -->
-    <div class="md:flex md:items-center md:justify-between mb-8">
-        <div class="flex items-center space-x-4">
-            {% if profile and profile.profile_picture %}
-                <img src="{{ profile.profile_picture.url }}" alt="{{ user.get_full_name }}" class="w-16 h-16 rounded-full object-cover border-2 border-indigo-500 shadow-sm">
-            {% else %}
-                <div class="w-16 h-16 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-2xl border-2 border-indigo-200">
-                    {{ user.first_name|default:user.username|first|upper }}
+    <div class="index-card p-8 rounded-lg shadow-md mb-8 border border-[#241F14]/20 text-[#241F14]">
+        <div class="md:flex md:items-center md:justify-between">
+            <div class="flex items-center space-x-6">
+                {% if profile and profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="{{ user.get_full_name }}" class="w-20 h-24 object-cover border border-[#241F14]/20 rounded-sm">
+                {% else %}
+                    <div class="w-20 h-24 bg-[#4B5320] text-[#F1E9D2] flex items-center justify-center font-serif-studio font-bold text-3xl border border-[#241F14]/20 rounded-sm">
+                        {{ user.first_name|default:user.username|first|upper }}
+                    </div>
+                {% endif %}
+                <div>
+                    <h1 class="text-3xl font-serif-studio font-bold text-[#241F14]">Welcome, {{ user.get_full_name|default:user.username }}</h1>
+                    <p class="text-sm text-[#241F14]/80 mt-1">
+                        Client Account • {{ profile.location|default:"Location not specified" }}
+                    </p>
                 </div>
-            {% endif %}
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Welcome, {{ user.get_full_name|default:user.username }}!</h1>
-                <p class="text-sm text-gray-500">
-                    Client Account • {{ profile.location|default:"Location not specified" }}
-                </p>
             </div>
-        </div>
-        <div class="mt-4 md:mt-0 flex space-x-3">
-            <a href="{% url 'client_profile_edit' %}" class="bg-white text-gray-700 border border-gray-300 font-medium px-4 py-2 rounded-lg hover:bg-gray-50 transition text-sm">
-                Edit Profile
-            </a>
-            <a href="{% url 'client_requests_list' %}" class="bg-white text-indigo-700 border border-indigo-200 font-medium px-4 py-2 rounded-lg hover:bg-indigo-50 transition text-sm">
-                My Requests
-            </a>
-            <a href="{% url 'artist_discovery' %}" class="bg-indigo-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-indigo-700 transition shadow text-sm">
-                Browse Artists
-            </a>
+            <div class="mt-6 md:mt-0 flex space-x-3">
+                <a href="{% url 'client_profile_edit' %}" class="bg-[#241F14] text-[#F1E9D2] font-medium px-4 py-2.5 rounded hover:bg-[#362f20] transition text-sm">
+                    Edit Profile
+                </a>
+                <a href="{% url 'client_requests_list' %}" class="bg-[#241F14] text-[#F1E9D2] font-medium px-4 py-2.5 rounded hover:bg-[#362f20] transition text-sm">
+                    My Requests
+                </a>
+                <a href="{% url 'artist_discovery' %}" class="btn-wine font-medium px-5 py-2.5 rounded shadow-sm text-sm">
+                    Browse Artists & Gallery
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- Client Overview Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <a href="{% url 'client_requests_list' %}" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
-            <div class="text-sm font-medium text-gray-500">Active Requests</div>
-            <div class="mt-2 text-3xl font-extrabold text-indigo-600">{{ active_requests_count }}</div>
-        </a>
-        <a href="{% url 'client_requests_list' %}" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
-            <div class="text-sm font-medium text-gray-500">Completed Commissions</div>
-            <div class="mt-2 text-3xl font-extrabold text-green-600">{{ completed_requests_count }}</div>
-        </a>
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <div class="text-sm font-medium text-gray-500">Reviews Left</div>
-            <div class="mt-2 text-3xl font-extrabold text-gray-900">{{ reviews_left_count }}</div>
+    <!-- Client Overview Grid (Corkboard Zones / Index Cards) -->
+    <div class="bg-[#7C8850] p-8 rounded-lg border border-[#F1E9D2]/20 shadow-md">
+        <h2 class="text-2xl font-serif-studio text-[#F1E9D2] mb-6 flex items-center gap-2">
+            📌 My Commission Overview
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a href="{% url 'client_requests_list' %}" class="index-card p-6 rounded border border-[#241F14]/20 shadow-md hover:rotate-1 transform transition">
+                <div class="text-xs font-bold uppercase tracking-wider text-[#6E2A3A] mb-2">📌 Active Requests</div>
+                <div class="text-4xl font-serif-studio font-bold text-[#241F14]">{{ active_requests_count }}</div>
+                <span class="text-xs text-[#241F14]/70 block mt-2">In Progress or Pending Approval</span>
+            </a>
+
+            <a href="{% url 'client_requests_list' %}" class="index-card p-6 rounded border border-[#241F14]/20 shadow-md hover:-rotate-1 transform transition">
+                <div class="text-xs font-bold uppercase tracking-wider text-[#4B5320] mb-2">📌 Completed Commissions</div>
+                <div class="text-4xl font-serif-studio font-bold text-[#241F14]">{{ completed_requests_count }}</div>
+                <span class="text-xs text-[#241F14]/70 block mt-2">Finished Artist Projects</span>
+            </a>
+
+            <div class="index-card p-6 rounded border border-[#241F14]/20 shadow-md">
+                <div class="text-xs font-bold uppercase tracking-wider text-[#C69A2E] mb-2">📌 Stamped Feedback</div>
+                <div class="text-4xl font-serif-studio font-bold text-[#241F14]">{{ reviews_left_count }}</div>
+                <span class="text-xs text-[#241F14]/70 block mt-2">Reviews Submitted to Artists</span>
+            </div>
         </div>
     </div>
 </div>

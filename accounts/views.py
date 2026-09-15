@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout
 from django.contrib import messages
 from .forms import ArtistRegistrationForm, ClientRegistrationForm, UserLoginForm
 
@@ -57,7 +57,6 @@ def login_view(request):
             login(request, user)
             messages.success(request, f"Welcome back, {user.first_name or user.username}!")
             
-            # Role-based dashboard redirect
             if user.is_artist():
                 return redirect('artist_dashboard')
             elif user.is_client():

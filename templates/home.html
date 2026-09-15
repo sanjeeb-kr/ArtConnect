@@ -1,20 +1,82 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}ArtConnect — Working Artist Studio & Marketplace{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-    <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-6xl">
-        Discover & Connect with <span class="text-indigo-600">Creative Talent</span>
-    </h1>
-    <p class="mt-6 text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-        Find photographers, painters, musicians, dancers, poets, and creative professionals for custom commissions and events.
-    </p>
-    <div class="mt-10 flex justify-center gap-4">
-        <a href="{% url 'artist_discovery' %}" class="bg-indigo-600 text-white px-8 py-3.5 rounded-xl text-lg font-semibold hover:bg-indigo-700 transition shadow-lg hover:shadow-indigo-200">
-            Find Artists
-        </a>
-        <a href="{% url 'register_artist' %}" class="bg-white text-gray-700 border border-gray-300 px-8 py-3.5 rounded-xl text-lg font-semibold hover:bg-gray-50 transition">
-            Join as Artist
-        </a>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+    <!-- Asymmetric Split Hero -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Left: Newsreader Headline & CTAs -->
+        <div class="lg:col-span-6 space-y-6">
+            <span class="inline-block bg-[#C69A2E] text-[#241F14] text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-sm">
+                Studio Directory
+            </span>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl text-[#F1E9D2] font-serif-studio leading-[1.12]">
+                Where Independent Art Meets Honest Work
+            </h1>
+            <p class="text-lg text-[#F1E9D2]/90 max-w-xl">
+                Directly discover and hire painters, poets, musicians, dancers, and writers for original commissions.
+            </p>
+
+            <div class="pt-4 flex flex-wrap gap-4 items-center">
+                <a href="{% url 'artist_discovery' %}" class="btn-wine font-medium px-7 py-3.5 text-base rounded shadow-md inline-block">
+                    Find an Artist
+                </a>
+                <a href="{% url 'register_artist' %}" class="bg-[#F1E9D2] text-[#241F14] border border-[#241F14]/20 font-medium px-6 py-3.5 text-base rounded hover:bg-[#e6dcc1] transition inline-block">
+                    Join Studio Directory
+                </a>
+            </div>
+        </div>
+
+        <!-- Right: Pinned Portfolio Prints (Filled with Media Images) -->
+        <div class="lg:col-span-6 relative min-h-[380px] flex items-center justify-center">
+            <div class="grid grid-cols-2 gap-6 relative w-full max-w-lg">
+                <!-- Card 1: Painting (Tilted -2deg) -->
+                <div class="pin-mat p-3 -rotate-2 transform hover:z-20">
+                    <div class="h-44 bg-[#241F14] overflow-hidden flex items-center justify-center relative">
+                        <img src="{% static 'images/painting.jpg' %}" alt="Oil on Linen Painting" class="w-full h-full object-cover">
+                    </div>
+                    <div class="pt-3 text-center">
+                        <span class="font-serif-studio text-sm font-bold text-[#241F14] block">Oil on Linen</span>
+                        <span class="text-xs text-[#241F14]/70">Fine Painting</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Music (Tilted +2deg) -->
+                <div class="pin-mat p-3 rotate-2 transform hover:z-20 translate-y-4">
+                    <div class="h-44 bg-[#241F14] overflow-hidden flex items-center justify-center relative">
+                        <img src="{% static 'images/music.jpg' %}" alt="Acoustic Music Score" class="w-full h-full object-cover">
+                    </div>
+                    <div class="pt-3 text-center">
+                        <span class="font-serif-studio text-sm font-bold text-[#241F14] block">Acoustic Score</span>
+                        <span class="text-xs text-[#241F14]/70">Music Composition</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Poem (Tilted +1deg) -->
+                <div class="pin-mat p-3 rotate-1 transform hover:z-20 -translate-y-2">
+                    <div class="h-44 bg-[#241F14] overflow-hidden flex items-center justify-center relative">
+                        <img src="{% static 'images/poem.jpg' %}" alt="Poetry Manuscripts" class="w-full h-full object-cover">
+                    </div>
+                    <div class="pt-3 text-center">
+                        <span class="font-serif-studio text-sm font-bold text-[#241F14] block">Poetry Manuscripts</span>
+                        <span class="text-xs text-[#241F14]/70">Written Verse</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Dance (Tilted -2deg) -->
+                <div class="pin-mat p-3 -rotate-2 transform hover:z-20 translate-y-2">
+                    <div class="h-44 bg-[#241F14] overflow-hidden flex items-center justify-center relative">
+                        <img src="{% static 'images/dance.jpg' %}" alt="Stage Recital Dance" class="w-full h-full object-cover">
+                    </div>
+                    <div class="pt-3 text-center">
+                        <span class="font-serif-studio text-sm font-bold text-[#241F14] block">Stage Recital</span>
+                        <span class="text-xs text-[#241F14]/70">Dance Performance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

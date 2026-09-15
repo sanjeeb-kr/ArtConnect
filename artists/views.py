@@ -3,10 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.db.models import Avg, Sum, Count
-from .models import Post, ArtistType
+from .models import Post
 from .forms import PostForm, ArtistProfileForm
-from accounts.models import ArtistProfile, User
-from interactions.models import Like, Review, CommissionRequest, Payment
+from accounts.models import ArtistProfile
+from interactions.models import Like, CommissionRequest
 
 
 def get_artist_profile(user):
@@ -161,7 +161,6 @@ def public_artist_detail_view(request, artist_id):
     avg_rating = round(avg_rating_val, 1) if avg_rating_val else None
     reviews_count = reviews.count()
 
-    # Track which posts the logged in user has liked
     user_liked_post_ids = []
     if request.user.is_authenticated:
         user_liked_post_ids = list(

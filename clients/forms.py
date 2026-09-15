@@ -1,5 +1,5 @@
 from django import forms
-from accounts.models import ClientProfile, User
+from accounts.models import ClientProfile
 
 
 class ClientProfileForm(forms.ModelForm):
@@ -12,11 +12,5 @@ class ClientProfileForm(forms.ModelForm):
         model = ClientProfile
         fields = ['location', 'profile_picture']
         widgets = {
-            'location': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500',
-                'placeholder': 'City, Country'
-            }),
-            'profile_picture': forms.FileInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500'
-            }),
+            'location': forms.TextInput(attrs={'placeholder': 'City, Country'}),
         }

@@ -1,60 +1,60 @@
 {% extends "base.html" %}
 
-{% block title %}My Requests - ArtConnect{% endblock %}
+{% block title %}My Requests & Commissions — ArtConnect{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">My Requests & Commissions</h1>
-        <p class="text-gray-500 text-sm mt-1">Track the status of request submissions sent to artists.</p>
+        <h1 class="text-3xl font-serif-studio text-[#F1E9D2]">My Requests & Commissions</h1>
+        <p class="text-[#F1E9D2]/80 text-sm mt-1">Track the status of commission submissions sent to artists.</p>
     </div>
 
     {% if requests_list %}
         <div class="space-y-6">
             {% for req in requests_list %}
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                    <div class="md:flex md:items-center md:justify-between mb-4 pb-4 border-b border-gray-100">
+                <div class="index-card rounded-lg border border-[#241F14]/20 p-6 shadow-md">
+                    <div class="md:flex md:items-center md:justify-between mb-4 pb-4 border-b border-[#241F14]/15">
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900">{{ req.title }}</h3>
-                            <p class="text-sm text-gray-500 mt-0.5">
+                            <h3 class="text-2xl font-serif-studio font-bold text-[#241F14]">{{ req.title }}</h3>
+                            <p class="text-sm text-[#241F14]/80 mt-0.5">
                                 Artist: <strong>{{ req.artist.user.get_full_name|default:req.artist.user.username }}</strong>
                                 ({{ req.artist.artist_type.name|default:"Artist" }})
                             </p>
                         </div>
-                        <div class="mt-4 md:mt-0 flex items-center space-x-3">
-                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
-                                {% if req.status == 'PENDING' %}bg-amber-100 text-amber-800
-                                {% elif req.status == 'ACCEPTED' %}bg-blue-100 text-blue-800
-                                {% elif req.status == 'IN_PROGRESS' %}bg-purple-100 text-purple-800
-                                {% elif req.status == 'COMPLETED' %}bg-emerald-100 text-emerald-800
-                                {% elif req.status == 'REJECTED' %}bg-red-100 text-red-800{% endif %}">
-                                {{ req.get_status_display }}
+                        <div class="mt-4 md:mt-0 flex items-center space-x-4">
+                            <span class="px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider
+                                {% if req.status == 'PENDING' %}bg-[#C69A2E] text-[#241F14]
+                                {% elif req.status == 'ACCEPTED' %}bg-[#4B5320] text-[#F1E9D2]
+                                {% elif req.status == 'IN_PROGRESS' %}bg-[#7C8850] text-[#F1E9D2]
+                                {% elif req.status == 'COMPLETED' %}bg-[#6E2A3A] text-[#F1E9D2]
+                                {% elif req.status == 'REJECTED' %}bg-[#241F14] text-[#F1E9D2]{% endif %}">
+                                📌 {{ req.get_status_display }}
                             </span>
-                            <span class="text-indigo-600 font-extrabold text-lg">₹{{ req.budget }}</span>
+                            <span class="text-[#6E2A3A] font-bold text-xl">₹{{ req.budget }}</span>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-[#241F14]/90 mb-4">
                         {% if req.event_date %}
                             <div><strong>Event Date:</strong> {{ req.event_date|date:"M d, Y" }}</div>
                         {% endif %}
                         {% if req.location %}
                             <div><strong>Location:</strong> {{ req.location }}</div>
                         {% endif %}
-                        <div class="md:col-span-2 bg-gray-50 p-4 rounded-lg text-sm text-gray-700">
+                        <div class="md:col-span-2 bg-[#e6dcc1] p-4 rounded text-sm text-[#241F14] border border-[#241F14]/10">
                             <strong>Details:</strong> {{ req.details }}
                         </div>
                     </div>
 
                     {% if req.status == 'COMPLETED' %}
-                        <div class="flex justify-end pt-2 border-t border-gray-100">
+                        <div class="flex justify-end pt-3 border-t border-[#241F14]/15">
                             {% if req.review %}
-                                <span class="text-xs text-emerald-600 font-semibold flex items-center">
-                                    ✓ Reviewed ({{ req.review.rating }}/5 Stars)
+                                <span class="bg-[#6E2A3A] text-[#F1E9D2] text-xs font-bold px-3 py-1 rounded-sm">
+                                    STAMPED RATING {{ req.review.rating }}/5
                                 </span>
                             {% else %}
-                                <a href="{% url 'create_review' req.id %}" class="bg-indigo-600 text-white font-medium text-xs px-4 py-2 rounded-lg hover:bg-indigo-700 transition shadow">
-                                    Leave Review & Rating
+                                <a href="{% url 'create_review' req.id %}" class="btn-wine text-xs font-semibold px-4 py-2 rounded shadow-sm">
+                                    Stamp Artist Review & Rating
                                 </a>
                             {% endif %}
                         </div>
@@ -63,12 +63,12 @@
             {% endfor %}
         </div>
     {% else %}
-        <div class="bg-white p-12 text-center rounded-xl border border-dashed border-gray-300">
-            <h3 class="text-lg font-medium text-gray-900">No requests sent yet</h3>
-            <p class="mt-1 text-sm text-gray-500">Browse creative professionals and request custom artwork or services.</p>
+        <div class="bg-[#F1E9D2] p-12 text-center rounded-lg border border-[#241F14]/20 shadow-md">
+            <h3 class="font-serif-studio text-2xl text-[#241F14]">No requests sent yet</h3>
+            <p class="mt-1 text-sm text-[#241F14]/80">Browse creative professionals and request custom artwork or performances.</p>
             <div class="mt-6">
-                <a href="{% url 'artist_discovery' %}" class="bg-indigo-600 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition shadow">
-                    Browse Artists
+                <a href="{% url 'artist_discovery' %}" class="btn-wine font-medium px-5 py-2.5 rounded text-sm shadow-sm inline-block">
+                    Browse Artists Directory
                 </a>
             </div>
         </div>

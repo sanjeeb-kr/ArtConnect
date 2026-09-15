@@ -1,6 +1,6 @@
 from django import forms
 from .models import Post
-from accounts.models import ArtistProfile, User
+from accounts.models import ArtistProfile
 
 
 class PostForm(forms.ModelForm):
@@ -8,30 +8,11 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'description', 'media', 'thumbnail', 'category', 'price']
         widgets = {
-            'title': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                'placeholder': 'Title of your work (Song, Dance performance, Painting, Book, Poem, etc.)'
-            }),
-            'description': forms.Textarea(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                'rows': 4,
-                'placeholder': 'Describe your work, lyrics, inspiration, tools, or performance details...'
-            }),
-            'category': forms.Select(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
-            }),
-            'price': forms.NumberInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                'placeholder': 'Price in ₹ (Optional)'
-            }),
-            'media': forms.FileInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                'accept': 'image/*,video/*,audio/*,.pdf'
-            }),
-            'thumbnail': forms.FileInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                'accept': 'image/*'
-            }),
+            'title': forms.TextInput(attrs={'placeholder': 'Title of your work (Song, Dance performance, Painting, Book, Poem, etc.)'}),
+            'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Describe your work, lyrics, inspiration, tools, or performance details...'}),
+            'price': forms.NumberInput(attrs={'placeholder': 'Price in ₹ (Optional)'}),
+            'media': forms.FileInput(attrs={'accept': 'image/*,video/*,audio/*,.pdf'}),
+            'thumbnail': forms.FileInput(attrs={'accept': 'image/*'}),
         }
 
     def clean_media(self):
@@ -67,9 +48,5 @@ class ArtistProfileForm(forms.ModelForm):
         model = ArtistProfile
         fields = ['artist_type', 'bio', 'location', 'experience_years', 'profile_picture']
         widgets = {
-            'bio': forms.Textarea(attrs={'rows': 4, 'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500'}),
-            'location': forms.TextInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500'}),
-            'artist_type': forms.Select(attrs={'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500'}),
-            'experience_years': forms.NumberInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500'}),
-            'profile_picture': forms.FileInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500'}),
+            'bio': forms.Textarea(attrs={'rows': 4}),
         }

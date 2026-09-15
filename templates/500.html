@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Server Error - ArtConnect{% endblock %}
+{% block title %}Server Error — ArtConnect Studio{% endblock %}
 
 {% block content %}
-<div class="max-w-xl mx-auto px-4 py-20 text-center">
-    <div class="text-6xl font-extrabold text-red-600 mb-4">500</div>
-    <h1 class="text-3xl font-bold text-gray-900 mb-2">Something Went Wrong</h1>
-    <p class="text-gray-600 mb-8">An unexpected server error occurred. Please try again later or return to home.</p>
-    <a href="{% url 'home' %}" class="bg-indigo-600 text-white font-medium px-6 py-3 rounded-lg hover:bg-indigo-700 transition shadow">
-        Return to Home Page
-    </a>
+<div class="max-w-md mx-auto px-4 py-20 text-center">
+    <div class="index-card p-10 rounded-lg shadow-md border border-[#241F14]/20">
+        <h1 class="text-6xl font-serif-studio font-bold text-[#6E2A3A]">500</h1>
+        <h2 class="text-2xl font-serif-studio text-[#241F14] mt-2">Studio Server Exception</h2>
+        <p class="text-sm text-[#241F14]/80 mt-3 mb-6">Something unexpected happened. Please try again or return to the studio gallery.</p>
+        <a href="{% url 'home' %}" class="btn-wine font-medium px-6 py-2.5 rounded text-sm shadow-sm inline-block">
+            Return to Studio Home
+        </a>
+    </div>
 </div>
 {% endblock %}

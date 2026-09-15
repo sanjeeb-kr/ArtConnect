@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
-from accounts.models import ArtistProfile, ClientProfile
+from accounts.models import ArtistProfile
 from artists.models import Post
-from .models import CommissionRequest, Like, Review, Payment
+from .models import CommissionRequest, Like, Payment
 from .forms import CommissionRequestForm, ReviewForm
 
 
@@ -86,7 +86,6 @@ def update_request_status_view(request, request_id):
             comm_request.status = new_status
             comm_request.save()
 
-            # Automatic Payment Record Generation on Completion
             if new_status == CommissionRequest.Status.COMPLETED:
                 Payment.objects.get_or_create(
                     request=comm_request,
