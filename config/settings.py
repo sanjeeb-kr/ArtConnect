@@ -132,7 +132,6 @@ if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
         'API_KEY': CLOUDINARY_API_KEY,
         'API_SECRET': CLOUDINARY_API_SECRET,
     }
-    DEFAULT_FILE_STORAGE = 'config.storage.AutoCloudinaryStorage'
     STORAGES = {
         "default": {
             "BACKEND": "config.storage.AutoCloudinaryStorage",
@@ -150,8 +149,6 @@ else:
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Authentication URLs
 LOGIN_URL = 'login'
