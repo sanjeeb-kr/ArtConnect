@@ -180,13 +180,34 @@
 
     <!-- Notification Messages -->
     {% if messages %}
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div id="toast-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-3">
             {% for message in messages %}
-                <div class="p-4 rounded mb-3 text-sm font-medium border {% if message.tags == 'error' %}bg-[#6E2A3A] text-[#F1E9D2] border-[#F1E9D2]/30{% else %}bg-[#7C8850] text-[#F1E9D2] border-[#F1E9D2]/30{% endif %}">
-                    {{ message }}
+                <div class="toast-message flex items-center justify-between p-4 rounded text-sm font-medium border shadow-sm transition-all duration-500 ease-in-out {% if message.tags == 'error' %}bg-[#6E2A3A] text-[#F1E9D2] border-[#F1E9D2]/30{% else %}bg-[#7C8850] text-[#F1E9D2] border-[#F1E9D2]/30{% endif %}">
+                    <span>{{ message }}</span>
+                    <button type="button" onclick="dismissToast(this.parentElement)" class="ml-4 text-[#F1E9D2]/70 hover:text-[#F1E9D2] text-lg font-bold leading-none focus:outline-none" aria-label="Close">&times;</button>
                 </div>
             {% endfor %}
         </div>
+
+        <script>
+            function dismissToast(element) {
+                if (!element) return;
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    element.remove();
+                }, 500);
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const toasts = document.querySelectorAll('.toast-message');
+                toasts.forEach((toast) => {
+                    setTimeout(() => {
+                        dismissToast(toast);
+                    }, 4000);
+                });
+            });
+        </script>
     {% endif %}
 
     <!-- Main Studio Content -->
